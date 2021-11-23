@@ -16,3 +16,5 @@ The better option is to install [Qemu](https://www.qemu.org/download/)
 Then run the emulator with the following command:
 
 `qemu-system-i386 -drive file=boot_sect.bin,format=raw,index=0,media=disk`
+
+I have confirmed the above command (and system image) works on Linux Mint, MacOS High Sierra, and Windows 7.
