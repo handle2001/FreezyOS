@@ -6,12 +6,17 @@ mov [BOOT_DRIVE], dl  ; BIOS stores the boot drive in dl
 mov bp, 0x8000    ; stash the stack way out the way
 mov sp, bp
 
-mov bx, 0x9000    ; Load 5 sectors from 0x0000(ES):0x9000(BX)
-mov dh, 5
+xor ax, ax
+mov es, ax        ; ES = 0
+mov bx, 0x9000    ; Load 5 sectors into 0x0000(ES):0x9000(BX)
+mov dh, 2
 mov dl, [BOOT_DRIVE]
 call disk_load
 
 mov dx, [0x9000]  ; print the first loaded word
+call print_hex
+
+mov dx, [0x9000 + 512]
 call print_hex
 
 jmp $

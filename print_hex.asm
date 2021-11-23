@@ -1,38 +1,40 @@
 print_hex:
-  pusha           ; be a good jack, save to the stack!
-  mov cx, 4       ; loop counter set to 4 (16 bits / 4 bit nibbles)
+  pusha             ; save the register values to the stack for later
 
-  char_loop:
-    dec cx
+  mov cx,4          ; Start the counter: we want to print 4 characters
+                    ; 4 bits per char, so we're printing a total of 16 bits
 
-    mov ax, dx    ; move the hex value we're printing into ax
-    shr dx, 4     ; chop the least nibble off
-    and ax, 0xf   ; mask everything but the last nibble
+char_loop:
+  dec cx            ; Decrement the counter
 
-    mov bx, HEX_OUT ; move the address of the final string into bx
-    add bx, 2       ; skip the "0x"
-    add bx, cx      ; skip to the character we're on
+  mov ax,dx         ; copy bx into ax so we can mask it for the last chars
+  shr dx,4          ; shift bx 4 bits to the right
+  and ax,0xf        ; mask ah to get the last 4 bits
 
-    cmp ax, 10    ; in hex, values >= 10 are alphabetic
-    jl set_value  ; if value is < 10, it's a number
-    add byte [bx], 7 ; we only get here if this nibble is a letter
-                     ; since there is a gap of 7 between ASCII numbers
-                     ; and letters, this covers the gap
-    jl set_value
+  mov bx, HEX_OUT   ; set bx to the memory address of our string
+  add bx, 2         ; skip the '0x'
+  add bx, cx        ; add the current counter to the address
 
-  set_value:
-    add byte [bx], al ; [bx] already points to an ASCII value, so add
-                      ; the raw hex value to get the right ASCII value
-    cmp cx, 0         ; if  program counter is zero, we're done
-    je print_hex_done
-    jmp char_loop     ; otherwise do the next value
+  cmp ax,0xa        ; Check to see if it's a letter or number
+  jl set_letter     ; If it's a number, go straight to setting the value
+  add al, 0x27      ; If it's a letter, add 0x27, and plus 0x30 down below
+                    ; ASCII letters start 0x61 for "a" characters after
+                    ; decimal numbers. We need to cover that distance.
+  jl set_letter
 
-  print_hex_done:
-    mov bx, HEX_OUT   ; move our updated HEX_OUT to bx as argument for
-    call print_string ; print_string
+set_letter:
+  add al, 0x30      ; For and ASCII number, add 0x30
+  mov byte [bx],al  ; Add the value of the byte to the char at bx
 
-    popa             ; restore the register values from stack
-    ret 
+  cmp cx,0          ; check the counter, compare with 0
+  je print_hex_done ; if the counter is 0, finish
+  jmp char_loop     ; otherwise, loop again
 
-; global variables
-HEX_OUT: db "0x000", 0
+print_hex_done:
+  mov bx, HEX_OUT   ; print the string pointed to by bx
+  call print_string
+
+  popa              ; pop the initial register values back from the stack
+  ret               ; return the function
+
+HEX_OUT: db '0x0000', 0

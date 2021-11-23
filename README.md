@@ -3,6 +3,10 @@
 ## About FreezyOS
 FreezyOS is based on the "from scratch" operating system described in Nick Blundell's [_"Writing a Simple Operating System - From Scratch"_](https://www.cs.bham.ac.uk/~exr/lectures/opsys/10_11/lectures/os-dev.pdf)
 
+## Build It
+To build FreezyOS you need `nasm` for your host platform.
+`nasm boot_sect.asm -f bin -o boot_sect.bin`
+
 ## Try It
 To run FreezyOS you can write `boot_sect.bin` to an actual disk and boot a real x86 machine from it, which I very much don't recommend.
 

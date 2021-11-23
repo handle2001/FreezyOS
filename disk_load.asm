@@ -1,14 +1,17 @@
+; assumes DH contains the number of sectors to read
 disk_load:
     push dx             ; save DH to stack so we can compare later
-    mov ah, 0x02        ; BIOS disk read function
-    mov al, dh          ; read dh sectors
-    mov ch, 0x00        ; read cylinder 0
-    mov dh, 0x00        ; read head 0
-    mov cl, 0x02        ; read sector 2
+    call print_hex
+    ; arguments to int 0x13 follow:
+    mov ah, 0x02        ; 0x02 = read, 0x03 = write
+    mov al, dh          ; number of sectors to read
+    mov ch, 0x00        ; start cylinder
+    mov dh, 0x00        ; start head
+    mov cl, 0x02        ; start sector 2 (after boot sector)
 
     int 0x13        ; Do the read
 
-    jc disk_error   ; if carry flag is set after the read, an 
+    jc disk_error   ; if carry flag is set after the read, an
                     ; error occurred
 
     pop dx      ; recall how many sectors we wanted to read
@@ -24,5 +27,5 @@ disk_load:
         call print_string
         jmp $
 
-; Variabls
+; Variables
 DISK_ERROR_MSG db "Disk read error!", 0
