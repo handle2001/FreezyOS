@@ -5,6 +5,7 @@ FreezyOS is based on the "from scratch" operating system described in Nick Blund
 
 ## Build It
 To build FreezyOS you need `nasm` for your host platform.
+
 `nasm boot_sect.asm -f bin -o boot_sect.bin`
 
 ## Try It
@@ -13,4 +14,5 @@ To run FreezyOS you can write `boot_sect.bin` to an actual disk and boot a real 
 The better option is to install [Qemu](https://www.qemu.org/download/)
 
 Then run the emulator with the following command:
+
 `qemu-system-i386 -drive file=boot_sect.bin,format=raw,index=0,media=disk`
