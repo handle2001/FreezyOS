@@ -1,7 +1,6 @@
 ; assumes DH contains the number of sectors to read
 disk_load:
     push dx             ; save DH to stack so we can compare later
-    call print_hex
     ; arguments to int 0x13 follow:
     mov ah, 0x02        ; 0x02 = read, 0x03 = write
     mov al, dh          ; number of sectors to read
