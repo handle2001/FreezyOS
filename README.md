@@ -3,6 +3,11 @@
 ## About FreezyOS
 FreezyOS is based on the "from scratch" operating system described in Nick Blundell's [_"Writing a Simple Operating System - From Scratch"_](https://www.cs.bham.ac.uk/~exr/lectures/opsys/10_11/lectures/os-dev.pdf)
 
+## Current Status
+Currently FreezyOS boots completely into 32-bit protected mode and displays a string using basic VGA support.
+
+![Status Screenshot](status.png)
+
 ## Build It
 To build FreezyOS you need `nasm` for your host platform.
 
